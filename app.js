@@ -25,11 +25,12 @@ app.get('/', (req, res) => {
 
 app.post('/programmable-friends', (req, res) => {
   const { body } = req;
-  const { Body, MediaUrl0, MediaContentType0 } = body;
+  const { Body, MediaContentType0 } = body;
   const senderVerified = verifySender(body);
 
   if (senderVerified) {
-    const contentType = checkContent(Body, MediaUrl0, MediaContentType0);
+    // this accessing is odd, but destructuring gave me issues
+    const contentType = checkContent(Body, body.mediaUrl0, MediaContentType0);
     processMsg(contentType, body);
   }
 

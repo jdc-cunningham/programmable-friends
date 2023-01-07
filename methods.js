@@ -36,8 +36,6 @@ const processMsg = async (contentType, body) => {
   } else if (contentType === 'image') {
     const imgContext = getImageLabels(MediaUrl0);
 
-    console.log(imgContext);
-
     if (imgContext) {
       response = await msgFriend(Body + '\n\n' + imgContext);
     }
