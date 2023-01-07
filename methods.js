@@ -15,15 +15,15 @@ const verifySender = body => {
 }
 
 const checkContent = (body, mediaUrl = '', mediaType = '') => {
-  if (body && !mediaUrl) {
-    return 'text';
-  } else if (body && mediaUrl) {
+  if (mediaUrl) {
     if (mediaType.indexOf('video') !== -1) {
       return 'video';
     } else {
       return 'image';
     }
   }
+
+  return 'text';
 }
 
 const processMsg = async (contentType, body) => {
