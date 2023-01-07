@@ -14,6 +14,8 @@ const openai = new OpenAIApi(configuration);
 const msgFriend = async (msg) => {
   const prompt = `You: ${msg}\nFriend:`;
 
+  console.log('msg sent: ', prompt);
+
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt,
