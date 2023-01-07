@@ -5,7 +5,6 @@ const isWindows = process.platform === "win32";
 
 // https://superuser.com/questions/1009969/how-to-extract-a-frame-out-of-a-video-using-ffmpeg
 const getImageFromVideo = (videoPath, frameCount = 1) => { // frameCount means multiple, future nice to have
-  const appBasePath = process.cwd();
   const cmd = `ffmpeg -i ${videoPath} -vf "select=1" -vframes 1 ${appBasePath}/images/out.png`;
 
   exec(cmd, function (error, stdout, stderr) {

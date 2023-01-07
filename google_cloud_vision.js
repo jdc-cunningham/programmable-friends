@@ -25,14 +25,22 @@ const getImageLabels = async (imgPath) => {
   const [result] = await client.objectLocalization(imgPath);
   const objects = result.localizedObjectAnnotations;
 
-  objects.forEach(object => {
-    console.log(`Name: ${object.name}`);
-    console.log(`Confidence: ${object.score}`);
-    const veritices = object.boundingPoly.normalizedVertices;
-    veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
-  });
+  // enumerate values
+  // objects.forEach(object => {
+  //   console.log(`Name: ${object.name}`);
+  //   console.log(`Confidence: ${object.score}`);
+  //   const veritices = object.boundingPoly.normalizedVertices;
+  //   veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
+  // });
+
+  // return first one for now
+  if (objects.length) {
+    return objects[0].name;
+  } else {
+    return false;
+  }
 }
 
-const imgPath = `${appBasePath}/images/out.png`;
-
-getImageLabels(imgPath);
+module.exports = {
+  getImageLabels,
+};
