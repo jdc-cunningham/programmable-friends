@@ -1,0 +1,1 @@
+This folder temporarily holds file(s) during processing
