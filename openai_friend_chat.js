@@ -25,6 +25,11 @@ const msgFriend = async (msg) => {
     stop: ["You:"],
   });
 
+  // openapi can be busy
+  if (response?.data?.error) {
+    return "sorry I'm busy atm";
+  }
+
   if (response?.data?.choices) {
     return response.data.choices[0].text;
   } else {
