@@ -36,6 +36,8 @@ const processMsg = async (contentType, body) => {
   } else if (contentType === 'image') {
     const imgContext = getImageLabels(MediaUrl0);
 
+    console.log(imgContext);
+
     if (imgContext) {
       response = await msgFriend(Body + '\n\n' + imgContext);
     }
@@ -43,7 +45,7 @@ const processMsg = async (contentType, body) => {
     const vidContext = getImageFromVideo(MediaUrl0);
 
     if (vidContext) {
-      response = await msgFriend(Body + '\n\n' + imgContext);
+      response = await msgFriend(Body + '\n\n' + vidContext);
     }
   }
   
