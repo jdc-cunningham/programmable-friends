@@ -30,7 +30,7 @@ app.post('/programmable-friends', (req, res) => {
 
   if (senderVerified) {
     // this accessing is odd, but destructuring gave me issues
-    const contentType = checkContent(Body, body.mediaUrl0, MediaContentType0);
+    const contentType = checkContent(Body, body.MediaUrl0, MediaContentType0);
     processMsg(contentType, body);
   }
 
