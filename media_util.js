@@ -1,5 +1,5 @@
 const exec = require('child_process').exec;
-const https = require('https'); // or 'https' for https:// URLs
+const http = require('http');
 const fs = require('fs');
 const { twilioSend } = require('./twilio');
 
@@ -41,13 +41,14 @@ const remoteFileToDisk = async (mediaUrl, type) => {
   const file = fs.createWriteStream(filepath);
 
   return new Promise(resolve => {
-    https.get(mediaUrl, function(response) {
+    // this is okay since known source, public obfuscated urls
+    http.get(mediaUrl, function(response) {
       response.pipe(file);
   
       // after download completed close filestream
       file.on('finish', () => {
           file.close();
-          resolve(fileName);
+          resolve(filepath);
       });
 
       file.on('error', (err) => {
