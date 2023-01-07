@@ -5,7 +5,6 @@ dotenv.config({ path: __dirname + '/.env' });
 const vision = require('@google-cloud/vision');
 const {GoogleAuth, grpc} = require('google-gax');
 
-const appBasePath = process.cwd();
 const apiKey = process.env.GCLOUD_VISION_API_KEY;
 
 const getApiKeyCredentials = () => {
