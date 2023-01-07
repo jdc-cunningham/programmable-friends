@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 5000;
 
-
+const { verifySender, checkContent, processMsg } = require('./methods');
 
 // CORs
 app.use((req, res, next) => {
@@ -24,7 +24,15 @@ app.get('/', (req, res) => {
 });
 
 app.post('/programmable-friends', (req, res) => {
-  console.log(req);
+  const body = req;
+  const { Body, MediaUrl0, MediaContentType0 } = body;
+  const senderVerified = verifySender(body);
+
+  if (senderVerified) {
+    const contentType = checkContent(Body, MediaUrl0, MediaContentType0);
+    const processMsg = processMsg(contentType, body);
+  }
+
   res.status(200);
 });
 
