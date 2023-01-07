@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/programmable-friends', (req, res) => {
-  const body = req;
+  const { body } = req;
   const { Body, MediaUrl0, MediaContentType0 } = body;
   const senderVerified = verifySender(body);
 
