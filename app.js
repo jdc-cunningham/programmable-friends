@@ -30,7 +30,7 @@ app.post('/programmable-friends', (req, res) => {
 
   if (senderVerified) {
     const contentType = checkContent(Body, MediaUrl0, MediaContentType0);
-    const processMsg = processMsg(contentType, body);
+    processMsg(contentType, body);
   }
 
   res.status(200);
