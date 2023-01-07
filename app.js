@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.status(200).send('online');
 });
 
-app.get('/programmable-friends', (req, res) => {
+app.post('/programmable-friends', (req, res) => {
   console.log(req);
   res.status(200);
 });
