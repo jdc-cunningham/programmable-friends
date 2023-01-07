@@ -10,6 +10,7 @@ const twilioSend = (msg) => {
     .create({         
         to: process.env.MY_NUMBER,
         body: msg,
+        from: process.env.TWILIO_NUMBER,
       }) 
     .then(message => console.log(message)) 
     .done();
