@@ -12,7 +12,7 @@ const twilioSend = (msg) => {
         body: msg,
         from: process.env.TWILIO_NUMBER,
       }) 
-    .then(message => console.log(message)) 
+    .then(message => console.log(`msg sent ${!message.errorCode}`)) 
     .done();
 }
 
