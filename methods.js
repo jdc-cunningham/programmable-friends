@@ -14,11 +14,11 @@ const verifySender = body => {
   }
 }
 
-const checkContent = (body, MediaUrl0 = '', MediaContentType0 = '') => {
-  if (body && !MediaUrl0) {
+const checkContent = (body, mediaUrl = '', mediaType = '') => {
+  if (body && !mediaUrl) {
     return 'text';
-  } else if (body && MediaUrl0) {
-    if (MediaContentType0.indexOf('video') !== -1) {
+  } else if (body && mediaUrl) {
+    if (mediaType.indexOf('video') !== -1) {
       return 'video';
     } else {
       return 'image';
@@ -27,20 +27,20 @@ const checkContent = (body, MediaUrl0 = '', MediaContentType0 = '') => {
 }
 
 const processMsg = async (contentType, body) => {
-  const { Body, MediaUrl0 } = body;
+  const { Body, MediaContentType0 } = body;
 
   let response;
 
   if (contentType === 'text') {
     response = await msgFriend(Body);
   } else if (contentType === 'image') {
-    const imgContext = getImageLabels(MediaUrl0);
+    const imgContext = getImageLabels(body.mediaUrl0);
 
     if (imgContext) {
       response = await msgFriend(Body + '\n\n' + imgContext);
     }
   } else {
-    const vidContext = getImageFromVideo(MediaUrl0);
+    const vidContext = getImageFromVideo(body.mediaUrl0);
 
     if (vidContext) {
       response = await msgFriend(Body + '\n\n' + vidContext);
