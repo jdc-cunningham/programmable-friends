@@ -3,7 +3,7 @@ dotenv.config({ path: __dirname + '/.env' });
 
 const { getImageLabels } = require('./google_cloud_vision');
 const { msgFriend } = require('./openai_friend_chat');
-const { twilioSend } = require('./twlio.js');
+const { twilioSend } = require('./twilio.js');
 
 const verifySender = body => {
   if (body.From === process.env.MY_NUMBER) {
