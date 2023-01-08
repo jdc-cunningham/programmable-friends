@@ -55,7 +55,7 @@ const download = (uri, filename, promiseResolver) => {
       response.pipe(fileStream);
       promiseResolver(filename);
     } else if (response.headers.location) {
-      deferred.resolve(download(response.headers.location, filename));
+      deferred.resolve(download(response.headers.location, filename, promiseResolver));
     } else {
       promiseResolver(filename);
       deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
