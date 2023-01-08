@@ -65,7 +65,7 @@ const remoteFileToDisk = async (mediaUrl, type) => {
   const filepath = getFilePath(type);
 
   return new Promise(resolve => {
-    const downloaded = download(medialUrl, filepath);
+    const downloaded = download(mediaUrl, filepath);
     
     if (downloaded) {
       resolve(filepath);
