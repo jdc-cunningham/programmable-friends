@@ -33,7 +33,11 @@ const msgFriend = async (msg) => {
   }
 
   if (response?.data?.choices) {
-    return response.data.choices[0].text;
+    const friendRes = response.data.choices[0].text;
+
+    return friendRes.indexOf('?') !== -1
+      ? friendRes.split('?')[1]
+      : friendRes;
   } else {
     return "wut"; // default response
   }
