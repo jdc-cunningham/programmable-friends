@@ -26,6 +26,24 @@ const checkContent = (body, mediaUrl = '', mediaType = '') => {
   return 'text';
 }
 
+const checkMsg = (Body, imgData, type) => {
+  if (!Body && !imgData) {
+    return "What's up"; // fail message
+  }
+
+  if (Body && !imgData) {
+    return Body;
+  }
+
+  let body = Body ? Body + '\n\n' : "";
+
+  if (type === 'video') {
+    return body + 'this video has a ' + imgData + ' in it';
+  } else {
+    return body + 'this image has a ' + imgData + ' in it';
+  }
+}
+
 const processMsg = async (contentType, body) => {
   const { Body, MediaContentType0 } = body;
 
@@ -38,7 +56,7 @@ const processMsg = async (contentType, body) => {
     const imgContext = await getImageLabels(localImg);
 
     if (imgContext) {
-      response = await msgFriend(Body + '\n\n' + 'this image has a ' + imgContext + ' in it');
+      response = await msgFriend(checkMsg(Body, imgContext, 'image'));
       deleteFile(localImg); // not a big deal but avoid buildup/security
     }
   } else {
@@ -46,7 +64,7 @@ const processMsg = async (contentType, body) => {
     const vidContext = getImageFromVideo(body.MediaUrl0);
 
     if (vidContext) {
-      response = await msgFriend(Body + '\n\n' + 'this video has a ' + vidContext + ' in it');
+      response = await msgFriend(checkMsg(Body, vidContext, 'video'));
       deleteFile(localVid);
     }
   }
