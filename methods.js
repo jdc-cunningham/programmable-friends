@@ -35,7 +35,7 @@ const processMsg = async (contentType, body) => {
     response = await msgFriend(Body);
   } else if (contentType === 'image') {
     const localImg = await remoteFileToDisk(body.MediaUrl0, MediaContentType0);
-    const imgContext = getImageLabels(localImg);
+    const imgContext = await getImageLabels(localImg);
 
     if (imgContext) {
       response = await msgFriend(Body + '\n\n' + imgContext);
