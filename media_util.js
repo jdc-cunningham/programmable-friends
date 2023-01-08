@@ -1,5 +1,6 @@
 const exec = require('child_process').exec;
-const https = require('https');
+const q = require('q');
+const url = require('url');
 const fs = require('fs');
 const { twilioSend } = require('./twilio');
 
@@ -38,24 +39,31 @@ const getFilePath = (mediaType) => {
 // https://stackoverflow.com/a/11944984/2710227
 const remoteFileToDisk = async (mediaUrl, type) => {
   const filepath = getFilePath(type);
-  const file = fs.createWriteStream(filepath);
 
   return new Promise(resolve => {
-    // this is okay since known source, public obfuscated urls
-    https.get(mediaUrl, function(response) {
-      response.pipe(file);
-  
-      // after download completed close filestream
-      file.on('finish', () => {
-          file.close();
-          resolve(filepath);
-      });
+    // https://stackoverflow.com/a/40554947/2710227
+    const protocol = url.parse(mediaUrl).protocol.slice(0, -1);
+    const deferred = q.defer();
 
-      file.on('error', (err) => {
-        console.log(err);
-        resolve(false);
-      })
-    });
+    const onError = function (e) {
+      fs.unlink(filepath);
+      deferred.reject(e);
+    }
+
+    require(protocol).get(uri, function(response) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        const fileStream = fs.createWriteStream(filepath);
+        fileStream.on('error', onError);
+        fileStream.on('close', deferred.resolve);
+        response.pipe(fileStream);
+      } else if (response.headers.location) {
+        deferred.resolve(download(response.headers.location, filepath));
+      } else {
+        deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
+      }
+    }).on('error', onError);
+
+    resolve(deferred.promise);
   });
 }
 
