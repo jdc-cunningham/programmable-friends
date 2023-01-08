@@ -37,7 +37,7 @@ const getImageLabels = async (imgPath) => {
     if (objects.length) {
       resolve(objects[0].name);
     } else {
-      resolve(false);
+      resolve("What is that pic?");
     }
   });
 }

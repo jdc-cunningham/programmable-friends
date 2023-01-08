@@ -55,7 +55,9 @@ const downloadResolver = async (uri, filename) => {
           fileStream.on('error', onError);
           fileStream.on('close', deferred.resolve);
           response.pipe(fileStream);
-          promiseResolver(true);
+          setTimeout(() => {
+            promiseResolver(true);
+          }, 3000); // dumb wait fully written to disk
         } else if (response.headers.location) {
           deferred.resolve(download(response.headers.location, filename, promiseResolver));
         } else {
