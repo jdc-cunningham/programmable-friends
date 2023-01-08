@@ -9,7 +9,7 @@ const appBasePath = process.cwd();
 // https://superuser.com/questions/1009969/how-to-extract-a-frame-out-of-a-video-using-ffmpeg
 const getImageFromVideo = async (videoPath, frameCount = 1) => { // frameCount means multiple, future nice to have
   return new Promise(resolve => {
-    const cmd = `ffmpeg -y -i ${videoPath} -vf "select=1" -vframes 1 ${appBasePath}/images/out.png`;
+    const cmd = `ffmpeg -hide_banner -y -i ${videoPath} -vf "select=1" -vframes 1 ${appBasePath}/images/out.png `;
 
     exec(cmd, function (error, stdout, stderr) {
       if (error) {
@@ -19,7 +19,11 @@ const getImageFromVideo = async (videoPath, frameCount = 1) => { // frameCount m
 
       if (stderr) {
         console.log(stderr);
-        resolve(false);
+
+        // this technically is an error but it's producing an image still
+        setTimeout(() => {
+          resolve(`${appBasePath}/images/out.png`);
+        }, 3000);
       }
 
       // wait write to disk, helps with human delay too

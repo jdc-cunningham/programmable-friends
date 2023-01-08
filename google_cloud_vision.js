@@ -19,7 +19,12 @@ const getApiKeyCredentials = () => {
 }
 
 const getImageLabels = async (imgPath) => {
+  
   return new Promise(async resolve => {
+    if (!imgPath) {
+      resolve(false);
+    }
+
     const sslCreds = getApiKeyCredentials();
     const client = new vision.ImageAnnotatorClient({sslCreds});
     const [result] = await client.objectLocalization(imgPath);
