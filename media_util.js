@@ -36,34 +36,42 @@ const getFilePath = (mediaType) => {
   }
 }
 
-// https://stackoverflow.com/a/11944984/2710227
+// https://stackoverflow.com/a/40554947/2710227
+const download = async (uri, filename) => {
+  var protocol = url.parse(uri).protocol.slice(0, -1);
+  var deferred = Q.defer();
+  var onError = function (e) {
+      fs.unlink(filename);
+      deferred.reject(e);
+  }
+
+  require(protocol).get(uri, function(response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+        var fileStream = fs.createWriteStream(filename);
+        fileStream.on('error', onError);
+        fileStream.on('close', deferred.resolve);
+        response.pipe(fileStream);
+    } else if (response.headers.location) {
+        deferred.resolve(download(response.headers.location, filename));
+    } else {
+        deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
+    }
+  }).on('error', onError);
+
+  return deferred.promise;
+};
+
 const remoteFileToDisk = async (mediaUrl, type) => {
   const filepath = getFilePath(type);
 
   return new Promise(resolve => {
-    // https://stackoverflow.com/a/40554947/2710227
-    const protocol = url.parse(mediaUrl).protocol.slice(0, -1);
-    const deferred = q.defer();
-
-    const onError = function (e) {
-      fs.unlink(filepath);
-      deferred.reject(e);
+    const downloaded = download(medialUrl, filepath);
+    
+    if (downloaded) {
+      resolve(filepath);
+    } else {
+      resolve(false);
     }
-
-    require(protocol).get(uri, function(response) {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        const fileStream = fs.createWriteStream(filepath);
-        fileStream.on('error', onError);
-        fileStream.on('close', deferred.resolve);
-        response.pipe(fileStream);
-      } else if (response.headers.location) {
-        deferred.resolve(download(response.headers.location, filepath));
-      } else {
-        deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
-      }
-    }).on('error', onError);
-
-    resolve(deferred.promise);
   });
 }
 
