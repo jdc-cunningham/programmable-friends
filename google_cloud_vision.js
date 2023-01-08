@@ -35,7 +35,7 @@ const getImageLabels = async (imgPath) => {
   
     // return first one for now
     if (objects.length) {
-      resolve(objects[0].name);
+      resolve(objects[0].name.toLowerCase());
     } else {
       resolve(false);
     }

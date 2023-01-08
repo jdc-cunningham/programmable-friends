@@ -44,6 +44,10 @@ const checkMsg = (Body, imgData, type) => {
   }
 }
 
+const errMsg = () => {
+  twilioSend('What is that?'); // if media fails to download/be read
+};
+
 const processMsg = async (contentType, body) => {
   const { Body, MediaContentType0 } = body;
 
@@ -53,6 +57,12 @@ const processMsg = async (contentType, body) => {
     response = await msgFriend(Body);
   } else if (contentType === 'image') {
     const localImg = await remoteFileToDisk(body.MediaUrl0, MediaContentType0);
+
+    if (!localImg) {
+      errMsg();
+      return;
+    }
+
     const imgContext = await getImageLabels(localImg);
 
     if (imgContext) {
@@ -61,6 +71,12 @@ const processMsg = async (contentType, body) => {
     }
   } else {
     const localVid = await remoteFileToDisk(body.MediaUrl0, MediaContentType0);
+
+    if (!localVid) {
+      errMsg();
+      return;
+    }
+
     const vidContext = getImageFromVideo(body.MediaUrl0);
 
     if (vidContext) {
