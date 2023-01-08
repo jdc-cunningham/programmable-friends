@@ -10,6 +10,12 @@ Uses Twilio for the communication mechanism.
 
 <img src="./plan.JPG" width="800"/>
 
+### Demo video (YouTube)
+
+<a href="https://www.youtube.com/watch?v=f8b1evPtohA">
+  <img src="./demo.JPG"/>
+</a>
+
 ### Code flow
 
 * **app.js** -- (receive forwarding request from Twilio SMS/MMS)
@@ -18,11 +24,15 @@ Uses Twilio for the communication mechanism.
   * **openai_friend_chat.js** -- (send message to "AI" friend and get response back)
   * **twilio.js** -- (message me back)
 
-### Demo video (YouTube)
+### Getting started
 
-<a href="https://www.youtube.com/watch?v=f8b1evPtohA">
-  <img src="./demo.JPG"/>
-</a>
+You will need accounts:
+
+* Twilio, OpenAI, Google Cloud Vision
+
+You can run the individual bits locally or host it on a server.
+
+In the latter case you'd need a webserver with an https-enabled domain and NodeJS running with FFMPEG installed.
 
 ### Disclaimer
 
