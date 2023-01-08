@@ -36,40 +36,46 @@ const getFilePath = (mediaType) => {
   }
 }
 
-// https://stackoverflow.com/a/40554947/2710227
-const download = (uri, filename, promiseResolver) => {
-  var protocol = url.parse(uri).protocol.slice(0, -1);
-  var deferred = q.defer();
+const downloadResolver = async (uri, filename) => {
+  return new Promise(resolve => {
+    // https://stackoverflow.com/a/40554947/2710227
+    const download = (uri, filename, promiseResolver) => {
+      var protocol = url.parse(uri).protocol.slice(0, -1);
+      var deferred = q.defer();
 
-  var onError = function (e) {
-    fs.unlink(filename);
-    deferred.reject(e);
-    promiseResolver(false);
-  }
+      var onError = function (e) {
+        fs.unlink(filename);
+        deferred.reject(e);
+        promiseResolver(false);
+      }
 
-  require(protocol).get(uri, function(response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      var fileStream = fs.createWriteStream(filename);
-      fileStream.on('error', onError);
-      fileStream.on('close', deferred.resolve);
-      response.pipe(fileStream);
-      promiseResolver(filename);
-    } else if (response.headers.location) {
-      deferred.resolve(download(response.headers.location, filename, promiseResolver));
-    } else {
-      promiseResolver(filename);
-      deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
-    }
-  }).on('error', onError);
+      require(protocol).get(uri, function(response) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          var fileStream = fs.createWriteStream(filename);
+          fileStream.on('error', onError);
+          fileStream.on('close', deferred.resolve);
+          response.pipe(fileStream);
+          promiseResolver(true);
+        } else if (response.headers.location) {
+          deferred.resolve(download(response.headers.location, filename, promiseResolver));
+        } else {
+          promiseResolver(false);
+          deferred.reject(new Error(response.statusCode + ' ' + response.statusMessage));
+        }
+      }).on('error', onError);
 
-  return deferred.promise;
-};
+      return deferred.promise;
+    };
+
+    download(uri, filename, resolve);
+  });
+}
 
 const remoteFileToDisk = async (mediaUrl, type) => {
   const filepath = getFilePath(type);
 
   return new Promise(async resolve => {
-    const downloaded = await download(mediaUrl, filepath, resolve);
+    const downloaded = await downloadResolver(mediaUrl, filepath);
     
     if (downloaded) {
       resolve(filepath);
