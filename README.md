@@ -10,7 +10,12 @@ Uses Twilio for the communication mechanism.
 
 <img src="./plan.JPG" width="800"/>
 
+### Demo video (YouTube)
+
+<a href="https://www.youtube.com/watch?v=f8b1evPtohA">
+  <img src="./demo.JPG"/>
+</a>
+
 ### Disclaimer
 
 This is not a free thing to run, it will cost you some money but not a lot.
-
