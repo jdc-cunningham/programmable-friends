@@ -44,6 +44,8 @@ const checkMsg = (Body, imgData, type) => {
   }
 }
 
+// this was primarily added from the q module erroring out
+// while trying to download certain files
 const errMsg = () => {
   twilioSend('What is that?'); // if media fails to download/be read
 };
@@ -85,7 +87,7 @@ const processMsg = async (contentType, body) => {
     }
   }
   
-  twilioSend(response);
+  twilioSend(checkMsg(response));
 }
 
 module.exports = {
