@@ -34,7 +34,7 @@ const processMsg = async (contentType, body) => {
   if (contentType === 'text') {
     response = await msgFriend(Body);
   } else if (contentType === 'image') {
-    const localImg = await remoteFileToDisk(body.mediaUrl0, MediaContentType0);
+    const localImg = await remoteFileToDisk(body.MediaUrl0, MediaContentType0);
     const imgContext = getImageLabels(localImg);
 
     if (imgContext) {
@@ -42,8 +42,8 @@ const processMsg = async (contentType, body) => {
       deleteFile(localImg); // not a big deal but avoid buildup/security
     }
   } else {
-    const localVid = await remoteFileToDisk(body.mediaUrl0, MediaContentType0);
-    const vidContext = getImageFromVideo(body.mediaUrl0);
+    const localVid = await remoteFileToDisk(body.MediaUrl0, MediaContentType0);
+    const vidContext = getImageFromVideo(body.MediaUrl0);
 
     if (vidContext) {
       response = await msgFriend(Body + '\n\n' + vidContext);
