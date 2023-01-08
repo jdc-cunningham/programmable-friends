@@ -37,9 +37,10 @@ const getFilePath = (mediaType) => {
 }
 
 // https://stackoverflow.com/a/40554947/2710227
-const download = async (uri, filename) => {
+const download = (uri, filename) => {
   var protocol = url.parse(uri).protocol.slice(0, -1);
   var deferred = q.defer();
+
   var onError = function (e) {
       fs.unlink(filename);
       deferred.reject(e);
