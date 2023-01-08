@@ -79,7 +79,8 @@ const processMsg = async (contentType, body) => {
       return;
     }
 
-    const vidContext = await getImageFromVideo(body.MediaUrl0);
+    const videoFrame = await getImageFromVideo(body.MediaUrl0);
+    const vidContext = await getImageLabels(videoFrame);
 
     if (vidContext) {
       response = await msgFriend(checkMsg(Body, vidContext, 'video'));

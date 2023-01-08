@@ -22,7 +22,7 @@ const getImageFromVideo = async (videoPath, frameCount = 1) => { // frameCount m
         resolve(false);
       }
 
-      resolve(true);
+      resolve(`${appBasePath}/images/out.png`);
     });
   });
 }
