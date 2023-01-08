@@ -7,19 +7,23 @@ const { twilioSend } = require('./twilio');
 const appBasePath = process.cwd();
 
 // https://superuser.com/questions/1009969/how-to-extract-a-frame-out-of-a-video-using-ffmpeg
-const getImageFromVideo = (videoPath, frameCount = 1) => { // frameCount means multiple, future nice to have
-  const cmd = `ffmpeg -i ${videoPath} -vf "select=1" -vframes 1 ${appBasePath}/images/out.png`;
+const getImageFromVideo = async (videoPath, frameCount = 1) => { // frameCount means multiple, future nice to have
+  return new Promise(resolve => {
+    const cmd = `ffmpeg -i ${videoPath} -vf "select=1" -vframes 1 ${appBasePath}/images/out.png`;
 
-  exec(cmd, function (error, stdout, stderr) {
-    if (error) {
-      console.log(error);
-      return false;
-    }
-    if (stderr) {
-      console.log(stderr);
-      return false;
-    }
-    return true;
+    exec(cmd, function (error, stdout, stderr) {
+      if (error) {
+        console.log(error);
+        resolve(false);
+      }
+
+      if (stderr) {
+        console.log(stderr);
+        resolve(false);
+      }
+
+      resolve(true);
+    });
   });
 }
 
