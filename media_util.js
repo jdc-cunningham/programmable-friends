@@ -22,7 +22,10 @@ const getImageFromVideo = async (videoPath, frameCount = 1) => { // frameCount m
         resolve(false);
       }
 
-      resolve(`${appBasePath}/images/out.png`);
+      // wait write to disk, helps with human delay too
+      setTimeout(() => {
+        resolve(`${appBasePath}/images/out.png`);
+      }, 3000);
     });
   });
 }
