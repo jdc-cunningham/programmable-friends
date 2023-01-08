@@ -19,25 +19,27 @@ const getApiKeyCredentials = () => {
 }
 
 const getImageLabels = async (imgPath) => {
-  const sslCreds = getApiKeyCredentials();
-  const client = new vision.ImageAnnotatorClient({sslCreds});
-  const [result] = await client.objectLocalization(imgPath);
-  const objects = result.localizedObjectAnnotations;
-
-  // enumerate values
-  // objects.forEach(object => {
-  //   console.log(`Name: ${object.name}`);
-  //   console.log(`Confidence: ${object.score}`);
-  //   const veritices = object.boundingPoly.normalizedVertices;
-  //   veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
-  // });
-
-  // return first one for now
-  if (objects.length) {
-    return objects[0].name;
-  } else {
-    return false;
-  }
+  return new Promise(async resolve => {
+    const sslCreds = getApiKeyCredentials();
+    const client = new vision.ImageAnnotatorClient({sslCreds});
+    const [result] = await client.objectLocalization(imgPath);
+    const objects = result.localizedObjectAnnotations;
+  
+    // enumerate values
+    // objects.forEach(object => {
+    //   console.log(`Name: ${object.name}`);
+    //   console.log(`Confidence: ${object.score}`);
+    //   const veritices = object.boundingPoly.normalizedVertices;
+    //   veritices.forEach(v => console.log(`x: ${v.x}, y:${v.y}`));
+    // });
+  
+    // return first one for now
+    if (objects.length) {
+      resolve(objects[0].name);
+    } else {
+      resolve(false);
+    }
+  });
 }
 
 module.exports = {
