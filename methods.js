@@ -38,7 +38,7 @@ const processMsg = async (contentType, body) => {
     const imgContext = await getImageLabels(localImg);
 
     if (imgContext) {
-      response = await msgFriend(Body + '\n\n' + 'this image has a ' + imgContext);
+      response = await msgFriend(Body + '\n\n' + 'this image has a ' + imgContext + ' in it');
       deleteFile(localImg); // not a big deal but avoid buildup/security
     }
   } else {
@@ -46,7 +46,7 @@ const processMsg = async (contentType, body) => {
     const vidContext = getImageFromVideo(body.MediaUrl0);
 
     if (vidContext) {
-      response = await msgFriend(Body + '\n\n' + 'this video has a ' + vidContext);
+      response = await msgFriend(Body + '\n\n' + 'this video has a ' + vidContext + ' in it');
       deleteFile(localVid);
     }
   }
